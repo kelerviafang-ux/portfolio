@@ -108,7 +108,7 @@ Here is what I did at those places
 
 ### Family, Academics, and Extracurriculars
 
-Everything for me, as for many others, revolves around family and faith.
+Everything for me revolves around family, academics, and extracurriculars.
 
 - I Live with my mom, sister and a pet here in SD, while my dad lives in China. 
 - My sister is named Victoria, and currently goes to OVMS 7th grade.  
