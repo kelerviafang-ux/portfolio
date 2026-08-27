@@ -60,10 +60,9 @@ Flags are made using Wikipedia images
     // 2. Define a JavaScript object for our http source and our data rows for the Living in the World grid
     var http_source = "https://upload.wikimedia.org/wikipedia/commons/";
     var living_in_the_world = [
-        {"flag": "0/01/Flag_of_California.svg", "greeting": "Hey", "description": "California - forever"},
-        {"flag": "b/b9/Flag_of_Oregon.svg", "greeting": "Hi", "description": "Oregon - 9 years"},
-        {"flag": "b/be/Flag_of_England.svg", "greeting": "Alright mate", "description": "England - 2 years"},
-        {"flag": "e/ef/Flag_of_Hawaii.svg", "greeting": "Aloha", "description": "Hawaii - 2 years"},
+        {"flag": "0/01/Flag_of_California.svg", "greeting": "Hey", "description": "California - 0-1, 2-6, 12-15"},
+        {"flag": "f/fa/Flag_of_the_People%27s_Republic_of_China.svg", "greeting": "Nǐ hǎo", "description": "China - 1-2, 6-12"}
+        
     ];
 
     // 3a. Consider how to update style count for size of container
@@ -101,23 +100,25 @@ Flags are made using Wikipedia images
 
 Here is what I did at those places
 
-- 🏫 Lots of Elementary Schools in Tucson, LA, Honolulu, and Glendale (CA)
-- 🏫 Middle and High School in Glendale (CA), Hoover High graduated '77
-- 🎓 Glendale CA Community College, UCLA Extension, LA Wilshire Computer Tech School '77 to '79
-- ⛪ England, London Missionary for Church of Jesus Christ of Latter-day Saints '79 to '81
-- 💼 Culver City, Glendale CA founder at Ashton-Tate, original PC's dBase 2 and 3 '82 to '87
-- 🎓 Eugene Oregon Undergraduate CompSci Degree at University of Oregon (Go Ducks!) '89 to '91
-- 💼 Eugene Oregon, founder and owner @ Microniche `88, Point Control CAD CAM developer '91 to '96
-- 🏢 San Diego CA Qualcomm, Satellite Comm and 1st Mobile OS (BREW) '96 to '19
-- 👨‍🏫 San Diego CA Teacher of Computer Science @ Del Norte High School San Diego '19 to present
+- 🏫 Born in Los Angeles, CA, in 2/21/2011
+- 🏫 Went back to BeiJing China (Where my parents use to work) to celebrate my 1st birthday
+- 🏫 Kindergarten in D39 Campus, San Diego, CA
+- 🏫 Elementary Schools (1-6 grade) in BeiJing, China
+- 🏫 Middle and High School in Oak Valley and Del Norte, San Diego (CA) 
 
-### Culture, Family, and Fun
+### Family, Academics, and Extracurriculars
 
 Everything for me, as for many others, revolves around family and faith.
 
-- My mother told me that I was Danish, English. and Irish, here is my researched [family tree]({{site.baseurl}}/images/about/familytree.png)
-- My family is pretty big as I have been married twice, my 1st wife passed away.  We have had 5 kids, 4 adopted by me, 1 biological.  Plus, there are three grandkids.  My name to my grandkids is Abuilito.
-- The gallery of pics has some of my family, fun, culture and faith memories.
+- I Live with my mom, sister and a pet here in SD, while my dad lives in China. 
+- My sister is named Victoria, and currently goes to OVMS 7th grade.  
+- My pet cat is named Rocky. We adopted her in March 2025. 
+- I'm in DNHS Concert Band! 
+- After school and after finishing all my HW, I usually play the clarinet and practice fencing. I take clarinet class once a week and I'm working on CM Level 8/All State and All Southern auditions 
+- I'm D rated in fencing and is working towards B or A Rating to get recuited in NCAA
+- My Dream Univeristy is UPenn!!!
+
+
 
 <comment>
 Gallery of Pics, scroll to the right for more ...
