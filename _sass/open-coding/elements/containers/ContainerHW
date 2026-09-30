@@ -1,0 +1,25 @@
+// Do not edit this line. Edit only the HTML inside the quotes below.
+outputElement.innerHTML = "";
+outputElement.innerHTML =
+  "<div class='ocs__container'>" +
+  "<div class='ocs__card'>" +
+  "<h3 class='ocs__section-title'>Poway Rotary Parade</h3>" +
+  "<p class='ocs__description'>Join us for the annual Poway Scripps Rotary Club parade celebration.</p>" +
+  "<div class='ocs__grid ocs__grid--standard cols-3'>" +
+  "<div class='ocs__grid-cell ocs__grid-cell--header'>Location: Poway Road</div>" +
+  "<div class='ocs__grid-cell ocs__grid-cell--accent'>Start time: 9:00AM</div>" +
+  "<div class='ocs__grid-cell ocs__grid-cell--muted'>Parade floats</div>" +
+  "</div>" +
+  "<div class='ocs__table-wrap'>" +
+  "<table class='ocs__table'>" +
+  "<thead>" +
+  "<tr><th>Event Details</th><th>Status</th></tr>" +
+  "</thead>" +
+  "<tbody>" +
+  "<tr><td>Parade Entry</td><td>Open</td></tr>" +
+  "<tr><td>Volunteer Registration</td><td>Active</td></tr>" +
+  "</tbody>" +
+  "</table>" +
+  "</div>" +
+  "<div class='ocs__callout'>Parade gathers crowds down Poway Road.</div>" +
+  "</div></div>";
