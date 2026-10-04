@@ -8,9 +8,6 @@
       <button type="button" class="copyBtn" title="Copy Code">⎘</button>
       <button type="button" class="saveBtn" title="Save Code">💾</button>
       <button type="button" class="clearStorageBtn" title="Clear Storage">🗑</button>
-      {% if include.live %}
-      <label><input type="checkbox" class="livePreview" checked> Live preview / 实时预览</label>
-      {% endif %}
   {% endcapture %}
   {% capture ui_runner_bottom_controls %}
     {% include runners/fragments/editor-stats.html %}
@@ -65,14 +62,11 @@ import { BaseRunner, UiExecutor } from '{{ site.baseurl }}/assets/js/pages/runne
     editor,
     outputElement: uiOutput,
   });
-  const livePreview = container.querySelector('.livePreview');
-  let previewTimer;
 
   runner.bindEditorButtons({
     resetValue: defaultCode || "// Write your JavaScript code here",
     onClear: () => {
       stopExecution();
-      if (livePreview?.checked) runCode();
     },
     saveFeedback: '✔',
     copyFeedback: '✔'
@@ -80,7 +74,6 @@ import { BaseRunner, UiExecutor } from '{{ site.baseurl }}/assets/js/pages/runne
 
   // Stop execution
   function stopExecution() {
-    clearTimeout(previewTimer);
     uiExecutor.stop();
   }
 
@@ -91,13 +84,11 @@ import { BaseRunner, UiExecutor } from '{{ site.baseurl }}/assets/js/pages/runne
 
   // Stop button
   container.querySelector('.stopBtn').onclick = () => {
-    if (livePreview) livePreview.checked = false;
     stopExecution();
   };
 
   // Run button logic
   function runCode() {
-    clearTimeout(previewTimer);
     return uiExecutor.run();
   }
 
@@ -106,17 +97,6 @@ import { BaseRunner, UiExecutor } from '{{ site.baseurl }}/assets/js/pages/runne
   // Keyboard shortcut
   runner.bindShortcut(runCode);
 
-  // Wait briefly after typing so incomplete edits do not run on every keystroke.
-  if (livePreview) {
-    editor.on('change', () => {
-      clearTimeout(previewTimer);
-      if (livePreview.checked) previewTimer = setTimeout(runCode, 350);
-    });
-    livePreview.addEventListener('change', () => {
-      clearTimeout(previewTimer);
-      if (livePreview.checked) runCode();
-    });
-  }
   {% if include.autorun %}
   runCode();
   {% endif %}

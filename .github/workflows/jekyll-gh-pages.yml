@@ -142,6 +142,6 @@ jobs:
           {
             echo "### Published blog"
             echo "- [Blog list]($SITE_URL/blogs/)"
-            echo "- [SASS Container JavaScript — Live Runner]($SITE_URL/hwhacks/sass-container-js-runner/)"
+            echo "- [SASS Container JavaScript Runner]($SITE_URL/hwhacks/sass-container-js-runner/)"
             echo "The build verified that the Runner page exists and is linked from the blog list."
           } >> "$GITHUB_STEP_SUMMARY"
