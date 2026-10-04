@@ -47,6 +47,22 @@
     &.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   }
 
+  .ocs__grid--calculator {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.75rem;
+    margin: 1rem 0;
+
+    .ocs__grid-cell {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 3rem;
+      padding: 0.75rem 0.5rem;
+      font-weight: 700;
+    }
+  }
+
   .ocs__grid-cell {
     padding: 1rem;
     border: 1px solid var(--ui-border, #484851);
@@ -63,7 +79,10 @@
     }
   }
 
-  .ocs__grid-cell--header { font-weight: 700; }
+  .ocs__grid-cell--header {
+    grid-column: 1 / -1;
+    font-weight: 700;
+  }
   .ocs__grid-cell--accent {
     border-color: var(--pref-accent-color, #3b82f6);
     border-left-width: 4px;
