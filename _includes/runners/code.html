@@ -147,6 +147,7 @@ import { pythonURI, javaURI, fetchOptions } from '{{site.baseurl}}/assets/js/api
     pythonURI,
     javaURI,
     fetchOptions,
+    pythonRuntime: "{{ include.python_runtime | default: 'backend' }}",
   });
 
   const pseudoExecutor = new PseudocodeExecutor({

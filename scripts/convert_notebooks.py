@@ -266,6 +266,7 @@ class CodeRunner:
             '   challenge=challenge' + str(code_runner_count),
             '   code=code' + str(code_runner_count),
             '   source=source' + str(code_runner_count),
+            *(['   python_runtime="browser"'] if self.options.get('python_runtime') == 'browser' else []),
             '%}',
             '',
         ]

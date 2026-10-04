@@ -1,5 +1,5 @@
 export class CodeExecutor {
-  constructor({ editor, outputElement, execTimeElement, languageSelect, pythonURI, javaURI, fetchOptions = {} } = {}) {
+  constructor({ editor, outputElement, execTimeElement, languageSelect, pythonURI, javaURI, fetchOptions = {}, pythonRuntime = 'backend' } = {}) {
     this.editor = editor;
     this.outputElement = outputElement;
     this.execTimeElement = execTimeElement;
@@ -7,6 +7,7 @@ export class CodeExecutor {
     this.pythonURI = pythonURI;
     this.javaURI = javaURI;
     this.fetchOptions = fetchOptions;
+    this.pythonRuntime = pythonRuntime;
   }
 
   async run() {
@@ -35,6 +36,15 @@ export class CodeExecutor {
     const options = { ...this.fetchOptions, method: 'POST', body };
 
     try {
+      if (lang === 'python' && this.pythonRuntime === 'browser') {
+        outputDiv.textContent = 'Loading Python and running...';
+        const { runPythonInBrowser } = await import('./BrowserPythonExecutor.js');
+        outputDiv.textContent = await runPythonInBrowser(code);
+        if (execTimeSpan) {
+          execTimeSpan.textContent = `Execution time: ${Date.now() - startTime}ms (browser Python)`;
+        }
+        return;
+      }
       const res = await fetch(runURL, options);
       const result = await res.json();
       const output = result.output || '[no output]';
