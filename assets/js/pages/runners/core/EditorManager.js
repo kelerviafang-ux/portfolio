@@ -30,9 +30,41 @@ export class EditorManager {
     }
 
     const textarea = this.container.querySelector('.editor-textarea');
-    if (!textarea || typeof CodeMirror === 'undefined') {
-      console.warn(`Runner ${this.containerId}: CodeMirror editor unavailable`);
+    if (!textarea) {
       return null;
+    }
+
+    if (typeof CodeMirror === 'undefined') {
+      // Keep the runner usable when the CDN is unavailable.
+      textarea.value = initialCode || fallbackCode || '';
+      textarea.setAttribute('aria-label', 'Code editor');
+      textarea.style.width = '100%';
+      textarea.style.height = editorHeight || '300px';
+      this.editor = {
+        getValue: () => textarea.value,
+        setValue: (value) => {
+          textarea.value = value;
+          textarea.dispatchEvent(new Event('input'));
+        },
+        on: (event, handler) => {
+          if (event === 'change') textarea.addEventListener('input', handler);
+        },
+        getOption: () => ({}),
+        setOption: (option, keys) => {
+          if (option !== 'extraKeys') return;
+          textarea.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' && (event.ctrlKey || event.metaKey)) {
+              event.preventDefault();
+              (event.metaKey ? keys['Cmd-Enter'] : keys['Ctrl-Enter'])?.();
+            }
+          });
+        },
+      };
+      if (trackChanges && typeof this.onChange === 'function') {
+        this.editor.on('change', () => this.onChange(textarea.value));
+        this.onChange(textarea.value);
+      }
+      return this.editor;
     }
 
     this.setCodeMirrorHeight(editorHeight || '300px');

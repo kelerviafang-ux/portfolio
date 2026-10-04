@@ -31,7 +31,10 @@ export class UiExecutor {
       this.currentExecution = userFunction(outputElement);
     } catch (err) {
       if (this.outputElement) {
-        this.outputElement.innerHTML = `<div style="color: red; padding: 1rem;">Error: ${err.message}</div>`;
+        const message = document.createElement('pre');
+        message.setAttribute('role', 'alert');
+        message.textContent = `Error: ${err.message}`;
+        this.outputElement.replaceChildren(message);
       }
     }
   }

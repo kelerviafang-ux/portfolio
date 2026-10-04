@@ -9,6 +9,29 @@
 .ui-runner-container {
   @include runner-base;
 
+  .control-panel {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .runBtn {
+    width: auto;
+    min-width: 70px;
+    white-space: nowrap;
+  }
+
+  .saveBtn,
+  .clearStorageBtn {
+    @include icon-button(38px, 0);
+    flex-shrink: 0;
+  }
+
+  .control-panel label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
   // UI output area - visual output container
   .ui-output {
     // Layout & Dimensions
