@@ -70,6 +70,10 @@ jobs:
         run: |
           source venv/bin/activate  # Activate virtual environment
           python scripts/convert_notebooks.py  # Run notebook conversion
+
+      - name: Verify Runner notebook conversion
+        run: |
+          test -s _posts/HWHacks/2026-10-03-sasscontainerjshtml-with-runner_IPYNB_2_.md
           
       - name: Execute DOCX conversion script
         run: |
@@ -104,10 +108,14 @@ jobs:
           fi
 
           echo "baseurl: \"$BASEURL\"" > _config.override.yml
+          echo "PAGES_BASEURL=$BASEURL" >> "$GITHUB_ENV"
 
       - name: Build with Jekyll
         run: |
           bundle exec jekyll build --config _config.yml,_config.override.yml
+
+      - name: Verify published Runner and blog entry
+        run: python scripts/verify_runner_blog.py --site _site --baseurl "$PAGES_BASEURL"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5
@@ -125,3 +133,15 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
+
+      - name: Show published blog links
+        env:
+          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+        run: |
+          SITE_URL="${PAGE_URL%/}"
+          {
+            echo "### Published blog"
+            echo "- [Blog list]($SITE_URL/blogs/)"
+            echo "- [SASS Container JavaScript — Live Runner]($SITE_URL/hwhacks/sass-container-js-runner/)"
+            echo "The build verified that the Runner page exists and is linked from the blog list."
+          } >> "$GITHUB_STEP_SUMMARY"
