@@ -1,0 +1,5 @@
+# External packages for the imagined badminton scoreboard app.
+pandas
+Flask
+# json, datetime, statistics, and math are built into Python's standard library,
+# so they do not belong in requirements.txt and need no separate installation.
