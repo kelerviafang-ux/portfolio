@@ -1,0 +1,49 @@
+// Shared OCS input grammar: base class plus size and gradient modifiers.
+// Keep these separate from legacy @extend rules so sizes remain independent.
+input.ocs__input,
+textarea.ocs__input,
+select.ocs__input {
+    box-sizing: border-box;
+    max-width: 100%;
+    height: auto;
+    font-family: var(--pref-font-family);
+    font-size: var(--pref-font-size);
+    line-height: normal;
+    color: var(--pref-text-color);
+    background-color: color-mix(in srgb, var(--pref-bg-color) 88%, var(--pref-text-color) 12%);
+    border: 1px solid color-mix(in srgb, var(--pref-text-color) 24%, transparent);
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    filter: none;
+
+    &::placeholder {
+        color: color-mix(in srgb, var(--pref-text-color) 60%, transparent);
+        opacity: 1;
+    }
+
+    &:focus-visible {
+        border-color: var(--pref-accent-color);
+        outline: 2px solid color-mix(in srgb, var(--pref-accent-color) 35%, transparent);
+        outline-offset: 2px;
+    }
+
+    &:-webkit-autofill {
+        -webkit-text-fill-color: var(--pref-text-color);
+    }
+
+    @each $size, $scale in (small: 0.8, medium: 1.1, large: 1.5) {
+        &.#{$size} {
+            font-size: calc(var(--pref-font-size) * #{$scale});
+        }
+    }
+}
+
+input.ocs__input.gradient {
+    background-image: $gradient1;
+}
+
+@each $size, $height in (small: 8em, medium: 12em, large: 24em) {
+    textarea.ocs__input.#{$size} {
+        height: $height;
+    }
+}
