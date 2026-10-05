@@ -414,6 +414,7 @@ class UiRunner:
                 '{% endcapture %}',
                 '{% capture ui_html_' + variable_suffix + ' %}',
                 self.html,
+                *(['<script>', self.script, '</script>'] if self.script else []),
                 '{% endcapture %}',
                 '{% include runners/ui.html',
                 '   runner_id="' + self.runner_id + '"',

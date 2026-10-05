@@ -26,6 +26,17 @@ export class UiExecutor {
       const outputElement = this.outputElement;
       if (this.language === 'html') {
         outputElement.innerHTML = code;
+        // Scripts inserted with innerHTML are inert. Run inline scripts explicitly
+        // so HTML notebook exercises can wire up controls inside this output.
+        const scripts = [...outputElement.querySelectorAll('script')]
+          .filter(script => !script.src && (!script.type || script.type === 'text/javascript'));
+        if (scripts.length) {
+          const runScripts = new Function('outputElement', `
+            'use strict';
+            ${scripts.map(script => script.textContent).join('\n')}
+          `);
+          this.currentExecution = runScripts(outputElement);
+        }
         return;
       }
       const userFunction = new Function('outputElement', `

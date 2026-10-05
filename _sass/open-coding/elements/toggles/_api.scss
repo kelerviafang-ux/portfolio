@@ -1,0 +1,60 @@
+// Shared OCS toggle grammar; the native checkbox supplies state and keyboard input.
+.ocs__toggle {
+    --ocs-toggle-accent: var(--pref-accent-color);
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--pref-text-color);
+    cursor: pointer;
+}
+
+.ocs__toggle-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    opacity: 0;
+
+    &:checked + .ocs__toggle-track {
+        background: var(--ocs-toggle-accent);
+
+        &::before {
+            transform: translateX(23px);
+        }
+    }
+
+    &:focus-visible + .ocs__toggle-track {
+        outline: 2px solid var(--ocs-toggle-accent);
+        outline-offset: 2px;
+    }
+}
+
+.ocs__toggle-track {
+    position: relative;
+    flex: 0 0 54px;
+    width: 54px;
+    height: 31px;
+    border: 1px solid var(--ui-border);
+    border-radius: 31px;
+    background: var(--panel-mid);
+    transition: background 0.2s ease;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        width: 23px;
+        height: 23px;
+        border-radius: 50%;
+        background: var(--pref-text-color);
+        transition: transform 0.2s ease;
+    }
+}
+
+.ocs__toggle-label {
+    user-select: none;
+}
