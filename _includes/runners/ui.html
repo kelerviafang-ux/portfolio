@@ -3,7 +3,7 @@
   {% include runners/fragments/challenge-box.html challenge=include.challenge %}
 
   {% capture ui_runner_top_controls %}
-      <button type="button" class="runBtn" title="Run" aria-label="Run JavaScript">▶ Run</button>
+      <button type="button" class="runBtn" title="Run" aria-label="Run {% if include.language == 'html' %}HTML{% else %}JavaScript{% endif %}">▶ Run</button>
       <button type="button" class="stopBtn" title="Stop">■</button>
       <button type="button" class="copyBtn" title="Copy Code">⎘</button>
       <button type="button" class="saveBtn" title="Save Code">💾</button>
@@ -34,6 +34,8 @@ import { BaseRunner, UiExecutor } from '{{ site.baseurl }}/assets/js/pages/runne
   if (!container) return;
   
   const defaultCode = {{ include.code | jsonify | replace: '<', '\u003c' }}.trim();
+  const language = "{{ include.language | default: 'javascript' }}";
+  const fallbackCode = language === 'html' ? '<p>Edit the HTML, then press Run.</p>' : '// Write your JavaScript code here';
   const editorHeight = "{{ include.height }}";
   const outputHeight = "{{ include.output_height }}";
   const storageKey = container.dataset.storageKey;
@@ -42,10 +44,10 @@ import { BaseRunner, UiExecutor } from '{{ site.baseurl }}/assets/js/pages/runne
   const editor = runner.initializeEditor({
     defaultCode,
     editorHeight,
-    fallbackCode: "// Write your JavaScript code here",
+    fallbackCode,
     codeMirrorOptions: {
       lineNumbers: true,
-      mode: "javascript",
+      mode: language === 'html' ? 'xml' : 'javascript',
       theme: "darcula",
       indentUnit: 2,
       tabSize: 4,
@@ -61,10 +63,11 @@ import { BaseRunner, UiExecutor } from '{{ site.baseurl }}/assets/js/pages/runne
   const uiExecutor = new UiExecutor({
     editor,
     outputElement: uiOutput,
+    language,
   });
 
   runner.bindEditorButtons({
-    resetValue: defaultCode || "// Write your JavaScript code here",
+    resetValue: defaultCode || fallbackCode,
     onClear: () => {
       stopExecution();
     },

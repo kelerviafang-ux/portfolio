@@ -1,7 +1,8 @@
 export class UiExecutor {
-  constructor({ editor, outputElement } = {}) {
+  constructor({ editor, outputElement, language = 'javascript' } = {}) {
     this.editor = editor;
     this.outputElement = outputElement;
+    this.language = language;
     this.currentExecution = null;
   }
 
@@ -23,6 +24,10 @@ export class UiExecutor {
 
     try {
       const outputElement = this.outputElement;
+      if (this.language === 'html') {
+        outputElement.innerHTML = code;
+        return;
+      }
       const userFunction = new Function('outputElement', `
         'use strict';
         ${code}

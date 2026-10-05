@@ -48,6 +48,7 @@ Pairing behavior:
 Examples:
 - // CODE_RUNNER: Challenge text | panel: demo, slot: left, ratio: 35-65
 - <!-- UI_RUNNER: Notes | panel: demo, slot: left -->
+- <!-- UI_RUNNER: Edit semantic HTML | editor: html -->
 - // GAME_RUNNER: Arcade mode | panel: demo, slot: right, layout: row
 
 Real pair example (Cookie Clicker):
@@ -405,6 +406,23 @@ class UiRunner:
 
     def rendered_markup_lines(self) -> list[str]:
         """Build the final HTML/script wrapper markup inserted into rendered markdown."""
+        if self.options.get('editor') == 'html':
+            variable_suffix = self.runner_id.replace('-', '_')
+            return [
+                '{% capture ui_challenge_' + variable_suffix + ' %}',
+                self.description,
+                '{% endcapture %}',
+                '{% capture ui_html_' + variable_suffix + ' %}',
+                self.html,
+                '{% endcapture %}',
+                '{% include runners/ui.html',
+                '   runner_id="' + self.runner_id + '"',
+                '   language="html"',
+                '   challenge=ui_challenge_' + variable_suffix,
+                '   code=ui_html_' + variable_suffix,
+                '%}',
+                '',
+            ]
         return [
             '<div class="ui-runner">',
             self.html,
