@@ -49,6 +49,7 @@ Examples:
 - // CODE_RUNNER: Challenge text | panel: demo, slot: left, ratio: 35-65
 - <!-- UI_RUNNER: Notes | panel: demo, slot: left -->
 - <!-- UI_RUNNER: Edit semantic HTML | editor: html -->
+- # CODE_RUNNER: Preserve JSON f-string braces | literal: true
 - // GAME_RUNNER: Arcade mode | panel: demo, slot: right, layout: row
 
 Real pair example (Cookie Clicker):
@@ -247,6 +248,9 @@ class CodeRunner:
 
     def liquid_lines(self, code_fence_lines: list[str], code_runner_count: int) -> list[str]:
         """Render Jekyll Liquid captures/includes for embedding the code runner widget."""
+        # Opt in when code uses Liquid-looking delimiters as literal characters.
+        raw_start = ['{% raw %}'] if self.options.get('literal') is True else []
+        raw_end = ['{% endraw %}'] if raw_start else []
         return [
             '',
             '{% capture challenge' + str(code_runner_count) + ' %}',
@@ -254,11 +258,15 @@ class CodeRunner:
             '{% endcapture %}',
             '',
             '{% capture code' + str(code_runner_count) + ' %}',
+            *raw_start,
             self.code,
+            *raw_end,
             '{% endcapture %}',
             '',
             '{% capture source' + str(code_runner_count) + ' %}',
+            *raw_start,
             *code_fence_lines,
+            *raw_end,
             '{% endcapture %}',
             '',
             '{% include runners/code.html',
