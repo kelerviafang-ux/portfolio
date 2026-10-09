@@ -73,8 +73,11 @@ jobs:
 
       - name: Verify Runner notebook conversion
         run: |
-          test -s _posts/HWHacks/2026-10-03-sasscontainerjshtml-with-runner_IPYNB_2_.md
+          test -s _posts/HW/2026-10-03-sasscontainerjshtml-with-runner_IPYNB_2_.md
           
+      - name: Test Runner build contracts
+        run: venv/bin/python -m unittest discover -s scripts -p "test_runner_build.py" -v
+
       - name: Execute DOCX conversion script
         run: |
           source venv/bin/activate  # Activate virtual environment
@@ -142,6 +145,6 @@ jobs:
           {
             echo "### Published blog"
             echo "- [Blog list]($SITE_URL/blogs/)"
-            echo "- [SASS Container JavaScript Runner]($SITE_URL/hwhacks/sass-container-js-runner/)"
+            echo "- [SASS Container JavaScript Runner]($SITE_URL/HW/sass-container-js-runner/)"
             echo "The build verified that the Runner page exists and is linked from the blog list."
           } >> "$GITHUB_STEP_SUMMARY"

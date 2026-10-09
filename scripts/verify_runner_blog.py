@@ -5,7 +5,7 @@ from html.parser import HTMLParser
 from pathlib import Path
 
 
-RUNNER_PATH = "/hwhacks/sass-container-js-runner/"
+RUNNER_PATH = "/HW/sass-container-js-runner/"
 RUNNER_ID = "sass-container-js-live-v1"
 
 
