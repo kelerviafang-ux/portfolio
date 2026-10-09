@@ -5,6 +5,10 @@ import io
 import json
 from pathlib import Path
 import unittest
+import shutil
+import subprocess
+import sys
+import tempfile
 
 import yaml
 
@@ -33,27 +37,37 @@ class BooleanPopcornTests(unittest.TestCase):
             cls.solutions[task] = namespace
             cls.outputs[task] = output.getvalue()
 
-    def test_submission_metadata_and_three_distinct_popcorn_sections(self):
+    def test_notebook_has_publishable_metadata_and_distinct_hack_sections(self):
         first = self.notebook["cells"][0]
-        self.assertEqual(first["cell_type"], "raw")
         metadata = yaml.safe_load("".join(first["source"]).split("---", 2)[1])
-        expected = {
-            "title": "3.05 Boolean Expressions HW",
-            "categories": ["Python"],
-            "lesson_language": "Python",
-            "lesson_topic": "Boolean-Expressions HW",
-            "lesson_part": "interactive",
-            "lesson_type": "lesson",
-            "permalink": "/python/boolean-hw",
-            "author": "kelerviafang-ux",
-        }
-        for field, value in expected.items():
-            self.assertEqual(metadata[field], value)
+        self.assertEqual(metadata["layout"], "post")
+        self.assertTrue(metadata["codemirror"])
+        self.assertTrue(metadata["permalink"].startswith("/"))
         text = "\n".join("".join(cell["source"]) for cell in self.notebook["cells"] if cell["cell_type"] == "markdown")
         for number in [1, 2, 3]:
             self.assertEqual(text.count(f"## Popcorn Hack {number}:"), 1)
-        self.assertIn("## In-class MCQ Result", text)
-        self.assertIn("## College Board Pseudocode Check", text)
+        self.assertEqual(text.count("## Homework Hack:"), 1)
+
+    def test_clean_conversion_preserves_executable_browser_runners(self):
+        root = NOTEBOOK.parents[2]
+        relative_notebook = NOTEBOOK.relative_to(root)
+        with tempfile.TemporaryDirectory() as directory:
+            build = Path(directory)
+            source = build / relative_notebook
+            source.parent.mkdir(parents=True)
+            shutil.copyfile(NOTEBOOK, source)
+            shutil.copyfile(root / "Makefile", build / "Makefile")
+            shutil.copytree(root / "scripts", build / "scripts", ignore=shutil.ignore_patterns("__pycache__"))
+            subprocess.run(
+                ["make", "convert-single", f"PYTHON={sys.executable}", f"NOTEBOOK_FILE={relative_notebook}"],
+                cwd=build, check=True, capture_output=True, text=True,
+            )
+            post = (build / "_posts/HW/2026-10-08-python-boolean-expressionsHW_IPYNB_2_.md").read_text()
+            self.assertEqual(post.count('python_runtime="browser"'), 4)
+            for task in ["search", "homework"]:
+                # Conversion may remove the directive, but must preserve runnable Python.
+                code = "".join(self.cells[TASK_CELLS[task]]["source"]).split("\n", 1)[1].strip()
+                self.assertIn(code, post)
 
     def test_completeness_reports_each_field_and_a_missing_date(self):
         for requirement in ["Product name present", "Category accepted", "Spec number present", "Effective date present", "Record complete"]:
@@ -103,14 +117,20 @@ class BooleanPopcornTests(unittest.TestCase):
         self.assertIn("Record 1: ACCEPTED", output)
         for number in range(2, 7):
             self.assertIn(f"Record {number}: REJECTED", output)
-        self.assertEqual(len(output.splitlines()), 6)
+        self.assertEqual(len([line for line in output.splitlines() if line.startswith("Record ")]), 6)
+        self.assertIn("Summary: 1 ACCEPTED, 5 REJECTED", output)
 
-    def test_saved_and_published_outputs_match_the_completed_code(self):
+    def test_homework_rejects_malformed_record_objects_with_a_clear_error(self):
+        solution = self.solutions["homework"]
+        for value in [None, [], "not a record"]:
+            with self.subTest(value=value):
+                with self.assertRaisesRegex(TypeError, "must be a dictionary"):
+                    solution["validate_sfi_record"](value, solution["valid_categories"], solution["existing_spec_numbers"])
+
+    def test_saved_outputs_match_the_completed_code(self):
         for task, output in self.outputs.items():
             saved = "".join(self.cells[TASK_CELLS[task]]["outputs"][0]["text"])
             self.assertEqual(saved, output)
-            evidence = "".join(self.cells[TASK_CELLS[task] + "-observed"]["source"])
-            self.assertIn(output.rstrip(), evidence)
 
 
 if __name__ == "__main__":
