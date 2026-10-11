@@ -121,7 +121,12 @@ jobs:
           bundle exec jekyll build --config _config.yml,_config.override.yml
 
       - name: Verify published Runner and blog entry
-        run: python scripts/verify_runner_blog.py --site _site --baseurl "$PAGES_BASEURL"
+        run: |
+          python scripts/verify_runner_blog.py --site _site --baseurl "$PAGES_BASEURL" \
+            --python-lesson-path "/HW/2026-10-10-python-developing-algorithms/" \
+            --python-runner-id "HW-2026-10-10-python-developing-algorithms-0" \
+            --legacy-path "/hwhacks/2026-10-10-python-developing-algorithms/" \
+            --legacy-path "/hwhacks/2026-10-04-python-developing-algorithms/"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5
@@ -149,5 +154,6 @@ jobs:
             echo "### Published blog"
             echo "- [Blog list]($SITE_URL/blogs/)"
             echo "- [SASS Container JavaScript Runner]($SITE_URL/HW/sass-container-js-runner/)"
+            echo "- [Python Developing Algorithms]($SITE_URL/HW/2026-10-10-python-developing-algorithms/)"
             echo "The build verified that the Runner page exists and is linked from the blog list."
           } >> "$GITHUB_STEP_SUMMARY"
